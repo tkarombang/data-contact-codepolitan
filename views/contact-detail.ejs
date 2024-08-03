@@ -2,6 +2,15 @@
   <div class="row">
     <div class="col-md-8">
       <h2>Detail Contact</h2>
+      <% if (!contact) { %>
+        <tr>
+          <td colspan="5">
+            <div class="alert alert-danger fw-bold" role="alert">
+              Empty Data Contact | <a href="/contact" class="alert-link fw-medium"> &laquo; Back to Contact</a> | Give it a click.
+            </div>
+          </td>
+        </tr>
+      <% } else { %>
       <div class="card" style="width: 18rem;">
         <div class="card-body">
           <h5 class="card-title"><%= contact.nama %></h5>
@@ -10,6 +19,7 @@
           <a href="/contact" class="card-link">&laquo;Back</a>
         </div>
       </div>
+      <% } %>
     </div>
   </div>
 </div>

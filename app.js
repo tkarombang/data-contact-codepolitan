@@ -4,6 +4,7 @@ const expressLayouts = require('express-ejs-layouts')
 const app = express()
 const port = 3000
 const { loadContact, findContact } = require('./utils/contacts')
+const { loadComment } = require('./utils/comments')
 
 
 app.set('view engine', 'ejs')
@@ -34,25 +35,11 @@ app.get('/', (req, res) => {
 })
 
 app.get('/comments', (req, res) => {
-  
-const comments = [
-  {
-    username: 'Steve',
-    text: 'captain america follow the orders'
-  },
-  {
-    username: 'Boston',
-    text: 'the professor night sky'
-  },
-  {
-    username: 'James',
-    text: 'like or not he is footbal player'
-  }
-]
+  const comments = loadComment()
+  console.log(comments)
   res.render('comments', {
     layout: 'layouts/main-layout',
     title: 'CommentsPage', 
-    comments: 'ini adalah halaman comments',
     comments,
    })
 })
@@ -66,8 +53,12 @@ app.get('/contact', (req, res) => {
   })
 })
 
+//HALAMAN FORM TAMBAH DATA CONTACT
+app.get('/contact/add',)
+//HALAMAN DETAIL CONTACT
 app.get('/contact/:nama', (req, res) => {
   const contact = findContact(req.params.nama);
+
   res.render('contact-detail', {
     layout: 'layouts/main-layout',
     title: 'Halaman Detail COntact',
@@ -75,33 +66,12 @@ app.get('/contact/:nama', (req, res) => {
   })
 })
 
-
-
 app.get('/about', (req, res) => {
   res.render('about', {
     layout: 'layouts/main-layout',
     title: 'Halaman About'
   })
 })
-
-// app.get('/blog/:judul', (req, res) => {
-//   const { judul } = req.params
-//   res.send(`We are now in the ${judul}`)
-// })
-
-// app.get('/blog/:judul/:category/:author', (req, res) => {
-//   const { judul, category, author} = req.params
-//   res.send(`anda sedang memilih Judul: ${judul} dengan category: ${category} dan Penulis ${author}`)
-// })
-
-// app.get('/search/', (req, res) => {
-//   const { q } = req.query
-//   if(!q){
-//     res.send(`<h1>not found</h1>`)
-//   }
-//     res.send(`<h1>Search Keyword ${q} </h1>`)
-
-// })
 
 app.use('/', (req, res) => {
   res.status(404)
