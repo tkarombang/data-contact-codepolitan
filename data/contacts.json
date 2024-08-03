@@ -1,17 +1,1 @@
-[
-  {
-    "nama": "Muhammad",
-    "nohp": "0855555",
-    "email": "muh@had.com"
-  },
-  {
-    "nama": "Azwar",
-    "nohp": "0833333",
-    "email": "azw@had.com"
-  },
-  {
-    "nama": "Anas",
-    "nohp": "082222",
-    "email": "ans@had.com"
-  }
-]
+[{"nama":"Muhammad","nohp":"0855555","email":"muh@had.com"},{"nama":"Azwar","nohp":"0833333","email":"azw@had.com"},{"nama":"Anas","nohp":"082222","email":"ans@had.com"},{"nama":"marten","email":"mar@gmail.com","nohp":"098765433123"},{"nama":"robert","email":"rob@gmail.com","nohp":"085255334231"},{"nama":"gigi","email":"gig@gmail.com","nohp":"085123333214"},{"nama":"bagong","email":"bag@gmail.com","nohp":"085255231446"},{"nama":"Risalah","email":"ris@gmail.com","nohp":"085255664543"}]

@@ -5,6 +5,12 @@
 
       <a href="/contact/add" class="btn btn-primary btn-md mb-2">Add Data</a>
 
+      <% if (msg.length !== 0) { %>
+        <div class="alert alert-success" role="alert">
+          <%= msg %>
+        </div>
+      <% } %>
+
       <table class="table table-secondary">
         <thead>
           <tr>
