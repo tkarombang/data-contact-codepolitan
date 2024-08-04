@@ -7,7 +7,7 @@ const flash = require('connect-flash')
 const app = express()
 const port = 3000
 
-const { loadContact, findContact, addContact, cekDuplikat } = require('./utils/contacts')
+const { loadContact, findContact, addContact, cekDuplikat, deleteContact } = require('./utils/contacts')
 const { loadComment } = require('./utils/comments')
 const { query, validationResult, check, body } = require('express-validator');
 
@@ -107,6 +107,63 @@ app.post('/contact', [
   }
 })
 
+//PROCESS DELETE CONTACT using GET
+// app.get('/contact/delete/:nama', (req, res) => {
+//   const contact = findContact(req.params.nama)
+//   if(!contact){
+//     res.status(404)
+//     res.send('<h1>404</h1>')
+//   }else{
+//     deleteContact(req.params.nama)
+//     req.flash('msg', 'Success Delete...!')
+//     res.redirect('/contact')
+//   }
+// })
+
+//FORM UPDATE CONTACT
+app.get('/contact/edit/:nama', (req, res) => {
+  const namaContact = findContact(req.params.nama)
+
+  res.render('edit-contact', {
+    layout: 'layouts/main-layout',
+    title: 'Update Contact Page',
+    namaContact
+  })
+})
+
+//PROCESS UPDATE CONTACT
+app.post('/contact/update', [
+  body('nama').custom((value, { req }) => {
+    const duplicat = cekDuplikat(value)
+    if (value !== req.body.oldNama && duplicat){
+      throw new Error('Name is Exist')
+    }
+    return true
+  }),
+  check('email', 'Email Not Valid').isEmail(),
+  check('nohp', 'No hp Tidak Valid').isMobilePhone('id-ID'),
+  check('nohp', 'Must be 12 number of phone').isLength({ min: 12 })
+], (req, res) => {
+  const errors = validationResult(req)
+  if(!errors.isEmpty()){
+    // return res.status(400).json({errors: errors.array()})
+    res.render('edit-contact', {
+      title: 'Form Update Data Contact',
+      layout: 'layouts/main-layout',
+      errors: errors.array(),
+      namaContact: req.body,
+    })
+  }else{
+    res.send(req.body)
+    // addContact(req.body)
+    // //KIRIMKAN FLASH MESSAGE
+    // req.flash('msg', 'Success Update...!')
+    // res.redirect('/contact')
+  }
+})
+// app.post('/contact/update', (req, res) => {
+//   res.send(req.body);
+// })
 
 //HALAMAN DETAIL CONTACT
 app.get('/contact/:nama', (req, res) => {
@@ -118,6 +175,19 @@ app.get('/contact/:nama', (req, res) => {
     contact
   })
 })
+//PROCESS DELETE CONTACT using DELETE
+app.delete('/contact/:nama', (req, res) => {
+    const contact = findContact(req.params.nama)
+    if(!contact){
+      res.status(404)
+      res.send('<h1>404</h1>')
+    }else{
+      deleteContact(req.params.nama)
+      req.flash('msg', 'Success Delete...!')
+      // res.redirect('/contact')
+      res.status(204).end()
+    }
+  })
 
 app.get('/about', (req, res) => {
   res.render('about', {
