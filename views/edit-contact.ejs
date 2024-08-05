@@ -13,7 +13,7 @@
         </div>        
       <% } %>
 
-      <form method="post" action="/contact/update">
+      <form method="post" action="/contact/update?_method=PUT">
         <input type="hidden" name="oldNama" value="<%= (namaContact.oldNama) ? namaContact.oldNama : namaContact.nama %>">
         <div class="mb-3">
           <label for="nama" class="form-label">Name</label>

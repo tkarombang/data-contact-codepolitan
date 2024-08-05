@@ -1,18 +1,22 @@
 
 const express = require('express')
 const expressLayouts = require('express-ejs-layouts')
-const session = require('express-session')
+const methodOverride = require('method-override')
 const cookieParser = require('cookie-parser')
+const session = require('express-session')
 const flash = require('connect-flash')
 const app = express()
 const port = 3000
 
-const { loadContact, findContact, addContact, cekDuplikat, deleteContact } = require('./utils/contacts')
+const { loadContact, findContact, addContact, cekDuplikat, deleteContact, updateContacts } = require('./utils/contacts')
 const { loadComment } = require('./utils/comments')
 const { query, validationResult, check, body } = require('express-validator');
 
+
 app.set('view engine', 'ejs')
-app.use(expressLayouts) //THIRD PARTY MIDDLEWARE
+//THIRD PARTY MIDDLEWARE
+app.use(expressLayouts) 
+app.use(methodOverride('_method'))
 //BUILT-IN MIDDLEWARE
 app.use(express.static('public')) 
 app.use(express.urlencoded({extended: true}))
@@ -132,7 +136,7 @@ app.get('/contact/edit/:nama', (req, res) => {
 })
 
 //PROCESS UPDATE CONTACT
-app.post('/contact/update', [
+app.put('/contact/update', [
   body('nama').custom((value, { req }) => {
     const duplicat = cekDuplikat(value)
     if (value !== req.body.oldNama && duplicat){
@@ -154,16 +158,14 @@ app.post('/contact/update', [
       namaContact: req.body,
     })
   }else{
-    res.send(req.body)
-    // addContact(req.body)
-    // //KIRIMKAN FLASH MESSAGE
-    // req.flash('msg', 'Success Update...!')
-    // res.redirect('/contact')
+    // res.send(req.body)
+    updateContacts(req.body)
+    //KIRIMKAN FLASH MESSAGE
+    req.flash('msg', 'Success Update...!')
+    res.redirect('/contact')
   }
 })
-// app.post('/contact/update', (req, res) => {
-//   res.send(req.body);
-// })
+
 
 //HALAMAN DETAIL CONTACT
 app.get('/contact/:nama', (req, res) => {
