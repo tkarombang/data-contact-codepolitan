@@ -84,7 +84,7 @@ app.get('/contact/add', (req, res) => {
 
 //PROCESS DATA CONTACT
 app.post('/contact', [
-  check('email', 'Email Not Valid'),
+  check('email', 'Email Not Valid').isEmail(),
   check('nohp', 'No hp Tidak Valid').isMobilePhone('id-ID'),
   check('nohp', 'Must be 12 number of phone').isLength({ min: 12 }),
   body('nama').custom((value) => {
